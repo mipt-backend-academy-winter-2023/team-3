@@ -1,0 +1,15 @@
+components:
+    schemas:
+        Error:
+            type: object
+            additionalProperties: false
+            properties:
+                code:
+                    type: string
+                    description: Machine readable error code
+                message:
+                    type: string
+                    description: Human readable error message
+            required:
+                - code
+                - message
