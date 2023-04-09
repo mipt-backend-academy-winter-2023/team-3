@@ -8,7 +8,7 @@ servers:
     - url: http://localhost:8000
 
 paths:
-    /route_search:
+    /route_search/v1:
         post:
             summary: Search for a route by specifying a list of location IDs
 
