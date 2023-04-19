@@ -55,8 +55,6 @@ paths:
           description: Bad request.
         '409':
           description: Already exists.
-        '415':
-          description: Unsupported Media Type.
 
   /auth/login:
     get:
@@ -81,7 +79,5 @@ paths:
                   - token
         '400':
           description: Bad request.
-        '401':
+        '403':
           description: Unauthorized / Incorrect username or password.
-        '415':
-          description: Unsupported Media Type.
