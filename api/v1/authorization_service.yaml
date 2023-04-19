@@ -1,0 +1,92 @@
+openapi: 3.0.3
+
+info:
+  title: Authorization service
+  description: API for authorization
+  version: 0.1.0
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RegisterData:
+      type: object
+      properties:
+        username:
+          type: string
+          example: admin
+        email:
+          type: string
+          example: example@cornhub.com
+        password:
+          type: string
+          example: Password1234
+      required:
+        - username
+        - password
+    LoginData:
+      type: object
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: Password1234
+      required:
+        - username
+        - password
+
+
+paths:
+  /auth/register:
+    post:
+      summary: User registration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterData'
+
+      responses:
+        '201':
+          description: User created.
+        '400':
+          description: Bad request.
+        '409':
+          description: Already exists.
+        '415':
+          description: Unsupported Media Type.
+
+  /auth/login:
+    get:
+      summary: User login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginData'
+      responses:
+        '200':
+          description: Valid Login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                  - token
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized / Incorrect username or password.
+        '415':
+          description: Unsupported Media Type.

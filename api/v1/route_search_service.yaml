@@ -1,0 +1,53 @@
+openapi: 3.0.3
+
+info:
+  title: Route search service
+  description: API for searching route
+  version: 0.1.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /routing:
+    post:
+      summary: Route search
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                route_points_list:
+                  type: string
+                  example: "[point1, point2, point3]"
+              required:
+                - route_points_list
+      responses:
+        '200':
+          description: Route found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paved_route_points_list:
+                    type: string
+                    example: "[point1, point2, point3]"
+                required:
+                  - paved_route_points_list
+        '204':
+          description: Invalid input/route.
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '415':
+          description: Unsupported Media Type.
