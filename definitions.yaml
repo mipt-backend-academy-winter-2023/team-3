@@ -1,0 +1,11 @@
+components:
+  schemas:
+    AuthError:
+      type: string
+      description: Explanation to the authorization error
+      example: The password is not correct
+    
+    RoutingError:
+      type: string
+      description: Explanation to the routing error
+      example: Request points is not correct
