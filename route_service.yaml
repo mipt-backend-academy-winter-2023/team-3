@@ -10,6 +10,7 @@ externalDocs:
 servers:
   - url: https://example.com
 
+
 paths:
   /route:
     post:
@@ -32,16 +33,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+
         '400':
           description: Request points is not correct
           content:
             application/json:
               schema:
                 $ref: 'definitions.yaml#/components/schemas/RoutingError'
+
         '401': 
           description: Unauthorized
+
         '500':
           description: Internal server error
+
 
 components:
   securitySchemes:

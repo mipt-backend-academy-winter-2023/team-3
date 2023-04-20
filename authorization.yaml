@@ -10,6 +10,7 @@ externalDocs:
 servers:
   - url: https://example.com
 
+
 paths:
   /auth/register:
     post:
@@ -30,20 +31,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthToken'
+                
         '400': 
           description: Username or password is not valid
           content:
             application/json:
               schema:
                 $ref: "definitions.yaml#/components/schemas/AuthError"
+
         '409':
           description: Username is taken
           content:
             application/json:
               schema:
                 $ref: "definitions.yaml#/components/schemas/AuthError"
+
         '500':
           description: Internal server error
+
   /auth/login:
     post:
       tags:
@@ -63,22 +68,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthToken'
+
         '400': 
           description: The password is not correct
           content:
             application/json:
               schema:
                 $ref: "definitions.yaml#/components/schemas/AuthError"
+
         '409':
           description: User does not exist
           content:
             application/json:
               schema:
                 $ref: "definitions.yaml#/components/schemas/AuthError"
+
         '500':
           description: Internal server error
 
+
 components:
+
   securitySchemes:
     BearerAuth:
       type: http
