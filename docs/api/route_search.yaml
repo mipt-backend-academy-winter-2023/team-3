@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+    description: Route Search Service
+    title: Route Search Service
+    version: 1.0.0
+
+servers:
+    - url: http://localhost:8000
+
+paths:
+    /route_search/v1:
+        post:
+            summary: Search for a route by specifying a list of location IDs
+
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Route"
+
+            security:
+                - bearerAuth: []
+
+            responses:
+                "200":
+                    description: Route search successful and route returned
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Route"
+                "400":
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+    schemas:
+        Route:
+            type: object
+            required:
+                - locations
+            properties:
+                locations:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - id
+                            - name
+                        properties:
+                            id:
+                                type: number
+                            name:
+                                type: string

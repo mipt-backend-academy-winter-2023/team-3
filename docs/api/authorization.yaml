@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+    description: Authorization Service
+    title: Authorization Service
+    version: 1.0.0
+
+servers:
+    - url: http://localhost:8000
+
+paths:
+    /auth/v1/register:
+        post:
+            description: Register a new user
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UserData"
+
+            responses:
+                "201":
+                    description: User registered successfully
+                "400":
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+                "409":
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+
+    /auth/v1/login:
+        post:
+            description: Authenticate user and get access token
+
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UserData"
+
+            responses:
+                "200":
+                    description: User authenticated successfully and access token returned
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    access_token:
+                                        type: string
+                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                "400":
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "definitions.yaml#/components/schemas/Error"
+
+components:
+    schemas:
+        UserData:
+            type: object
+            required:
+                - login
+                - password
+            properties:
+                login:
+                    type: string
+                password:
+                    type: string
