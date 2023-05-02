@@ -4,6 +4,18 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.13.10"
 
+assembly / mainClass := Some("StartApp")
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
+
+assembly / assemblyJarName := s"${name.value}-${version.value}.jar"
+assembly / assemblyOutputPath := baseDirectory.value / "target" /(assembly / assemblyJarName).value
+
 lazy val root = (project in file("."))
   .settings(
     name := "project-mipt"
@@ -11,12 +23,12 @@ lazy val root = (project in file("."))
   .aggregate(
     auth,
     routing,
-    helper,
+    helper
   )
   .dependsOn(
     auth,
     routing,
-    helper,
+    helper
   )
 
 lazy val auth = (project in file("auth"))
