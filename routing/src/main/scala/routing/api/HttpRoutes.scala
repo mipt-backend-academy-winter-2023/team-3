@@ -1,7 +1,14 @@
 package routing.api
 
 import zio.http._
+import zio.ZIO
+
+import zio.http.model.{Method, Status}
 
 object HttpRoutes {
-  val app: HttpApp[Any, Response] = ???
+  val app: HttpApp[Any, Response] =
+    Http.collectZIO[Request] {
+      case req@Method.POST -> !! / "route_search" / "v1" =>
+        ZIO.succeed(Response.status(Status.NotImplemented))
+    }
 }

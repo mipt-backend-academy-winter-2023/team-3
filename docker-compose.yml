@@ -1,0 +1,22 @@
+version: '3'
+services:
+  auth:
+    build:
+      context: ./auth
+      dockerfile: ../Dockerfile
+#    volumes:
+#      - ./auth:/auth
+    ports:
+      - "8082:8082"
+  routing:
+    build:
+      context: ./routing
+      dockerfile: ../Dockerfile
+    ports:
+      - "8081:8081"
+  helper:
+    build:
+      context: ./helper
+      dockerfile: ../Dockerfile
+    ports:
+      - "7777:7777"

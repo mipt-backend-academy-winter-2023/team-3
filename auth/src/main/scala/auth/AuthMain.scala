@@ -7,6 +7,7 @@ import zio.{Scope, ZIO, ZIOAppArgs, ZIOAppDefault, http}
 
 object AuthMain extends ZIOAppDefault {
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = {
+    ZIO.logInfo("Start AuthMain")
     zio.http.Server.serve(HttpRoutes.app)
       .provide(
         Server.live,

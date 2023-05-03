@@ -4,17 +4,12 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.13.10"
 
-assembly / mainClass := Some("StartApp")
-
 ThisBuild / assemblyMergeStrategy := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
   case x =>
     val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
     oldStrategy(x)
 }
-
-assembly / assemblyJarName := s"${name.value}-${version.value}.jar"
-assembly / assemblyOutputPath := baseDirectory.value / "target" /(assembly / assemblyJarName).value
 
 lazy val root = (project in file("."))
   .settings(
@@ -34,17 +29,23 @@ lazy val root = (project in file("."))
 lazy val auth = (project in file("auth"))
   .settings(
     name := "project-auth",
-    libraryDependencies ++= Auth.dependencies
+    libraryDependencies ++= Auth.dependencies,
+    assembly / assemblyJarName := s"${name.value}-${version.value}.jar",
+    assembly / assemblyOutputPath := baseDirectory.value / "target" / (assembly / assemblyJarName).value
   )
 
 lazy val routing = (project in file("routing"))
   .settings(
     name := "project-routing",
-    libraryDependencies ++= Routing.dependencies
+    libraryDependencies ++= Routing.dependencies,
+    assembly / assemblyJarName := s"${name.value}-${version.value}.jar",
+    assembly / assemblyOutputPath := baseDirectory.value / "target" / (assembly / assemblyJarName).value
   )
 
 lazy val helper = (project in file("helper"))
   .settings(
     name := "project-helper",
-    libraryDependencies ++= Helper.dependencies
+    libraryDependencies ++= Helper.dependencies,
+    assembly / assemblyJarName := s"${name.value}-${version.value}.jar",
+    assembly / assemblyOutputPath := baseDirectory.value / "target" / (assembly / assemblyJarName).value
   )

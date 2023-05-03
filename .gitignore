@@ -17,3 +17,4 @@ project/target/
 
 # Misc
 *.env
+/auth/project/project/
