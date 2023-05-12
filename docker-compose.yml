@@ -2,16 +2,18 @@ version: "3.9"
 
 services:
   auth:
-    build: .
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
     ports:
       - "8082:8082"
     expose:
       - "8082"
-    entrypoint: ["java", "-jar", "/opt/routing-service/auth.jar"]
   routing:
-    build: .
+    build:
+      context: .
+      dockerfile: routing/Dockerfile
     ports:
       - "8081:8081"
     expose:
       - "8081"
-    entrypoint: ["java", "-jar", "/opt/routing-service/routing.jar"]
