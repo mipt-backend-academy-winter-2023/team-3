@@ -10,7 +10,6 @@ ThisBuild / assemblyMergeStrategy := {
 }
 
 lazy val auth = (project in file("."))
-//  .enablePlugins(AssemblyPlugin)
   .settings(
     name := "project-auth",
     libraryDependencies ++= Seq(

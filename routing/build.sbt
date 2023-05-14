@@ -10,7 +10,6 @@ ThisBuild / assemblyMergeStrategy := {
 }
 
 lazy val routing = (project in file("."))
-//  .enablePlugins(AssemblyPlugin)
   .settings(
     name := "project-routing",
     libraryDependencies ++= Seq(
