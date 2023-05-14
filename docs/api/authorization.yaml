@@ -26,13 +26,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "definitions.yaml#/components/schemas/Error"
+                                $ref: "../definitions.yaml#/components/schemas/Error"
                 "409":
                     description: Conflict
                     content:
                         application/json:
                             schema:
-                                $ref: "definitions.yaml#/components/schemas/Error"
+                                $ref: "../definitions.yaml#/components/schemas/Error"
 
     /auth/v1/login:
         post:
@@ -61,13 +61,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "definitions.yaml#/components/schemas/Error"
+                                $ref: "../definitions.yaml#/components/schemas/Error"
                 "401":
                     description: Unauthorized
                     content:
                         application/json:
                             schema:
-                                $ref: "definitions.yaml#/components/schemas/Error"
+                                $ref: "../definitions.yaml#/components/schemas/Error"
 
 components:
     schemas:
