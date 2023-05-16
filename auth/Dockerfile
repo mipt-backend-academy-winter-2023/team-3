@@ -8,6 +8,8 @@ RUN sbt assembly
 
 FROM eclipse-temurin:17-jre-focal
 
-RUN mkdir /opt/routing-service
+RUN mkdir /opt/auth
 COPY --from=build /root/auth/target/scala-2.13/auth.jar /opt/auth/auth.jar
+
+#EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "/opt/auth/auth.jar"]

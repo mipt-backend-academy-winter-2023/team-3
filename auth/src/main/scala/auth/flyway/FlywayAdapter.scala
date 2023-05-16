@@ -6,7 +6,6 @@ import org.flywaydb.core.api.FlywayException
 import org.flywaydb.core.api.output.MigrateResult
 import zio._
 
-
 object FlywayAdapter {
   trait Service extends {
     def migration: IO[FlywayException, MigrateResult]

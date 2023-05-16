@@ -1,12 +1,14 @@
 package auth
 
-import auth.api.HttpRoutes
-import auth.config.ServiceConfig
+import api.HttpRoutes
+import config.Config
 import flyway.FlywayAdapter
 import repo.CustomerRepositoryImpl
 import zio.http.Server
 import zio.sql.ConnectionPool
 import zio.{Scope, ZIO, ZIOAppArgs, ZIOAppDefault}
+
+import scala.language.postfixOps
 
 object AuthMain extends ZIOAppDefault {
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = {
@@ -17,13 +19,13 @@ object AuthMain extends ZIOAppDefault {
     } yield server
 
     server.provide(
-      ServiceConfig.dbLive,
+      Config.dbLive,
       FlywayAdapter.live,
       Server.live,
-      ServiceConfig.live,
+      Config.serverLive,
       CustomerRepositoryImpl.live,
       ConnectionPool.live,
-      ServiceConfig.connectionPoolConfigLive
+      Config.connectionPoolConfigLive
     )
   }
 }

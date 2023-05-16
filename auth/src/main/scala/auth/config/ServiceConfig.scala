@@ -1,32 +1,33 @@
 package auth.config
 
-import pureconfig.{ConfigReader, ConfigSource}
-import pureconfig.generic.auto.exportReader
+import pureconfig._
 import pureconfig.generic.semiauto.deriveReader
-import zio.sql.ConnectionPoolConfig
 import zio.http.ServerConfig
+import zio.sql.ConnectionPoolConfig
 import zio.{ULayer, ZIO, ZLayer, http}
 
 import java.util.Properties
 
-case class ServiceConfig(host: String, port: Int)
+object Config {
+  private val basePath = "app"
+  private val source = ConfigSource.default.at(basePath)
 
-object ServiceConfig {
-  private val source                       = ConfigSource.default.at("app")
-
-  val live: ZLayer[Any, Nothing, ServerConfig] =
-    zio.http.ServerConfig.live(
-      http.ServerConfig.default.port(
-        source.loadOrThrow[ConfigImpl].httpServiceConfig.port
-      )
-    )
   val dbLive: ULayer[DbConfig] = {
     import ConfigImpl._
     ZLayer.fromZIO(
       ZIO.attempt(source.loadOrThrow[ConfigImpl].dbConfig).orDie
     )
   }
-  val connectionPoolConfigLive: ZLayer[DbConfig, Throwable, ConnectionPoolConfig] =
+
+  val serverLive: ZLayer[Any, Nothing, ServerConfig] =
+    zio.http.ServerConfig.live(
+      http.ServerConfig.default.port(
+        source.loadOrThrow[ConfigImpl].httpServiceConfig.port
+      )
+    )
+
+  val connectionPoolConfigLive
+  : ZLayer[DbConfig, Throwable, ConnectionPoolConfig] =
     ZLayer(
       for {
         serverConfig <- ZIO.service[DbConfig]
@@ -45,18 +46,18 @@ object ServiceConfig {
 }
 
 case class ConfigImpl(
-    dbConfig: DbConfig,
-    httpServiceConfig: HttpServerConfig
-)
+                       dbConfig: DbConfig,
+                       httpServiceConfig: HttpServerConfig
+                     )
 case class DbConfig(
-    url: String,
-    user: String,
-    password: String
-)
+                     url: String,
+                     user: String,
+                     password: String
+                   )
 case class HttpServerConfig(
-    host: String,
-    port: Int
-)
+                             host: String,
+                             port: Int
+                           )
 
 object ConfigImpl {
   implicit val configReader: ConfigReader[ConfigImpl] = deriveReader[ConfigImpl]

@@ -1,5 +1,4 @@
 package auth.model
 
-case class User(id: Int, username: String, password: String)
-
+case class Customer(id: Int, firstName: String, lastName: String)
 
