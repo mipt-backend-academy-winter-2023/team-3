@@ -1,15 +1,15 @@
 package auth.repo
 
-import auth.model.Customer
+import auth.model.User
 import zio.schema.{DeriveSchema, Schema}
 import zio.sql.macros.TableSchema
 import zio.sql.postgresql.PostgresJdbcModule
 
 trait PostgresTableDescription extends PostgresJdbcModule {
 
-  implicit val customerSchema = DeriveSchema.gen[Customer]
+  implicit val userSchema: Schema[User] = DeriveSchema.gen[User]
 
-  val customers = defineTable[Customer]
+  val users = defineTable[User]
 
-  val (customerId, fName, lName) = customers.columns
+  val (userId, username, password) = users.columns
 }

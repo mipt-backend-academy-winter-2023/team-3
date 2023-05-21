@@ -8,6 +8,7 @@ object V {
   val circle_version = "0.14.2"
   val pureconfig = "0.17.3"
   val circe_version = "0.14.1"
+  val jwt_circe_version = "9.2.0"
 }
 
 
@@ -26,9 +27,15 @@ object Libs {
     "com.github.pureconfig" %% "pureconfig" % V.pureconfig
   )
 
+  val jwt: List[ModuleID] = List(
+    "com.github.jwt-scala" %% "jwt-circe" % V.jwt_circe_version
+  )
+
   val circe: List[ModuleID] = List(
     "io.circe" %% "circe-core",
     "io.circe" %% "circe-generic",
     "io.circe" %% "circe-parser"
   ).map(_ % V.circe_version)
+
+
 }

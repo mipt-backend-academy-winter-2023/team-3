@@ -1,1 +1,1 @@
-DROP TABLE "customer" IF EXISTS;
+DROP TABLE "user" IF EXISTS;

@@ -1,10 +1,10 @@
-CREATE TABLE "customer"
+CREATE TABLE "user"
 (
     "id"         SERIAL,
-    "first_name" VARCHAR NOT NULL,
-    "last_name"  VARCHAR NOT NULL
+    "username" VARCHAR NOT NULL,
+    "password"  VARCHAR NOT NULL
 );
 
-INSERT INTO "customer" (first_name, last_name)
-VALUES  ('jane', 'doe'),
-        ('john', 'doe');
+INSERT INTO "user" (username, password)
+VALUES  ('username', 'password'),
+        ('123', '321');
