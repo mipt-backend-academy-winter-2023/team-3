@@ -7,9 +7,9 @@ import zio.sql.postgresql.PostgresJdbcModule
 
 trait PostgresTableDescription extends PostgresJdbcModule {
 
-  implicit val userSchema: Schema[User] = DeriveSchema.gen[User]
+  implicit val userSchema = DeriveSchema.gen[User]
 
   val users = defineTable[User]
 
-  val (userId, username, password) = users.columns
+  val (username, password) = users.columns
 }

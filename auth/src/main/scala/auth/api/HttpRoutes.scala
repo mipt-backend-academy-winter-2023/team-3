@@ -24,7 +24,7 @@ object HttpRoutes {
               case (user, Array()) =>
                 UserRepository.add(user)
                 ZIO.logInfo (s"Registered new user $user")
-                Response.ok
+                Response(Status.Ok, Headers.empty, Body.fromString(user.toString))
               case (_, _) =>
                 Response(Status.Conflict, Headers.empty, Body.fromString(
                   s"""
