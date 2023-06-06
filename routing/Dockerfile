@@ -3,7 +3,7 @@ FROM sbtscala/scala-sbt:eclipse-temurin-17.0.5_8_1.8.2_2.13.10 AS build
 COPY . /root
 WORKDIR /root
 
-RUN sbt assembly
+RUN sbt routing/assembly
 
 
 FROM eclipse-temurin:17-jre-focal

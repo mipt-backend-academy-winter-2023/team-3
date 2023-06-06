@@ -1,5 +1,5 @@
-import Libs._
-import sbt._
+import Libs.*
+import sbt.*
 
 trait Dependencies {
   def dependencies: Seq[ModuleID]
@@ -8,7 +8,7 @@ trait Dependencies {
 object Dependencies {
 
   object Auth extends Dependencies {
-    override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig).flatten
+    override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig, flyway, circe, jwtCore).flatten
   }
 
   object Routing extends Dependencies {
