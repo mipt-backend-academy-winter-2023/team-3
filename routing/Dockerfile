@@ -1,3 +1,6 @@
+FROM postgres:14.1
+RUN apt-get update && apt-get  install -y postgresql-14-postgis-3  
+
 FROM sbtscala/scala-sbt:eclipse-temurin-17.0.5_8_1.8.2_2.13.10 AS build
 
 COPY . /root
