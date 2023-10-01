@@ -30,5 +30,14 @@ services:
     expose:
       - "8081"
 
+  image:
+    build:
+      context: ..
+      dockerfile: ./image/Dockerfile
+    ports:
+      - "8090:8090"
+    expose:
+      - "8090"
+
 volumes:
   database-data:
