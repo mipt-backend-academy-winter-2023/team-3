@@ -7,7 +7,6 @@ import zio.{Scope, ZIO, ZIOAppArgs, ZIOAppDefault}
 
 object PhotoMain extends ZIOAppDefault {
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = {
-    println("zhopa")
     val server =
       for {
         server <- zio.http.Server
