@@ -9,71 +9,67 @@ import zio.http.model.{Method, Status, Header, Headers}
 import zio.stream.{ZSink, ZStream, ZPipeline}
 
 object HttpRoutes {
-  val corsHeaders =
-    Headers
-      .apply("Access-Control-Allow-Origin", "http://localhost")
-      .combine(
-        Headers
-          .apply("Access-Control-Allow-Credentials", "true")
-          .combine(
-            Headers.apply("Access-Control-Allow-Methods", "GET, PUT")
-          )
-      )
+
+  def getPath(x: String) = Paths.get(s"/${x}file")
+
 
   val app: HttpApp[Any, Nothing] =
     Http.collectZIO[Request] {
       case request @ Method.PUT -> !! / "upload" =>
         (for {
-          nodeIdStr <- ZIO
+          nodeId <- ZIO
             .fromOption(
               request.url.queryParams
                 .get("nodeId")
                 .flatMap(_.headOption)
             )
-            .tapError(_ => ZIO.logError("Provide nodeId argument"))
+            .tapError(_ => ZIO.logError("no nodeId parameter"))
+          path = getPath(nodeId)
           _ <- ZIO
-            .attempt(Files.createFile(Paths.get(s"/uploaded$nodeIdStr")))
-            .either
-            .map { case _ => null }
-          path = Paths.get(s"/uploaded$nodeIdStr")
+            .attempt(Files.createFile(path))
           _ <- request.body.asStream
             .via(ZPipeline.deflate())
             .run(ZSink.fromPath(path))
-        } yield (nodeIdStr)).either.map {
+        } yield (nodeId)).either.map {
           case Left(e) =>
             Response(
               status = Status.BadRequest,
-              body = Body.fromString(e.toString),
-              headers = corsHeaders
+              body = Body.fromString(e.toString)
             )
-          case Right(nodeIdStr) =>
-            Response(body = Body.fromString(nodeIdStr), headers = corsHeaders)
+          case Right(nodeId) =>
+            Response(
+              status = Status.Created,
+              body = Body.fromString(nodeId)
+            )
         }
 
       case request @ Method.GET -> !! / "download" =>
         (for {
-          nodeIdStr <- ZIO
+          nodeId <- ZIO
             .fromOption(
               request.url.queryParams
                 .get("nodeId")
                 .flatMap(_.headOption)
             )
-            .tapError(_ => ZIO.logError("Provide nodeId argument"))
-        } yield (nodeIdStr)).either.map {
+            .tapError(_ => ZIO.logError("no nodeId parameter"))
+        } yield (nodeId)).either.map {
           case Left(e) =>
-            Response(status = Status.BadRequest, headers = corsHeaders)
-          case Right(nodeIdStr) =>
-            if (Files.exists(Paths.get(s"/uploaded$nodeIdStr"))) {
+            Response(
+              status = Status.BadRequest,
+              body = Body.fromString(e.toString)
+            )
+          case Right(nodeId) =>
+            val path = getPath(nodeId)
+            if (Files.exists(path)) {
               Response(
                 body = Body.fromStream(
                   ZStream
-                    .fromPath(Paths.get(s"/uploaded$nodeIdStr"))
+                    .fromPath(path)
                     .via(ZPipeline.inflate())
-                ),
-                headers = corsHeaders
+                )
               )
             } else {
-              Response(status = Status.BadRequest, headers = corsHeaders)
+              Response(status = Status.BadRequest)
             }
         }
     }
