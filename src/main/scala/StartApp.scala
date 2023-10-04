@@ -1,4 +1,5 @@
 import helper.HelperMain
+import photo.PhotoMain
 import zio.{Scope, ZIO, ZIOAppArgs, ZIOAppDefault}
 
 object StartApp extends ZIOAppDefault {
@@ -6,6 +7,7 @@ object StartApp extends ZIOAppDefault {
     for {
       //_ <- RoutingMain.run
       //_ <- AuthMain.run
-      _ <- HelperMain.run
+      _ <- PhotoMain.run
+      // _ <- HelperMain.run
     } yield ()
 }
