@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  # database:
+  #   image: postgres
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - database-data:/var/lib/postgresql/data/
+
+  # auth:
+  #   build:
+  #     context: ..
+  #     dockerfile: ./auth/Dockerfile
+  #   ports:
+  #     - "8082:8082"
+  #   expose:
+  #     - "8082"
+  #   depends_on:
+  #     - database
+
+  routing:
+    build:
+      context: ..
+      dockerfile: ./routing/Dockerfile
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+    
+  photo:
+    build: 
+      context: ..
+      dockerfile: ./photo/Dockerfile
+    ports:
+      - "8084:8084"
+    expose:
+      - "8084"
+
+volumes:
+  database-data:

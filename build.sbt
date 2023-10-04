@@ -1,4 +1,4 @@
-import Dependencies.{Auth, Helper, Routing}
+import Dependencies.{Auth, Photo, Routing, Helper}
 
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
@@ -25,11 +25,13 @@ lazy val root = (project in file("."))
   .aggregate(
     auth,
     routing,
+    photo,
     helper,
   )
   .dependsOn(
     auth,
     routing,
+    photo,
     helper,
   )
 
@@ -47,6 +49,12 @@ lazy val routing = (project in file("routing"))
     libraryDependencies ++= Routing.dependencies,
     assembly / assemblyJarName := "routing.jar",
     assembly / mainClass := Some("routing.RoutingMain"),
+  )
+
+lazy val photo = (project in file("photo"))
+  .settings(
+    name := "project-photo",
+    libraryDependencies ++= Photo.dependencies
   )
 
 lazy val helper = (project in file("helper"))
