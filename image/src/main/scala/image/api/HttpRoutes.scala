@@ -1,5 +1,7 @@
 package image.api
 
+import image.validation.JpegValidation
+
 import zio.ZIO
 import zio.http._
 import zio.http.model.{Method, Status}
@@ -18,6 +20,7 @@ object HttpRoutes {
             )
           )
           bytesCount <- req.body.asStream
+            .via(JpegValidation.pipeline)
             .via(ZPipeline.deflate())
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {

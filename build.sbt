@@ -23,11 +23,13 @@ lazy val root = (project in file("."))
     auth,
     routing,
     helper,
+    image,
   )
   .dependsOn(
     auth,
     routing,
     helper,
+    image,
   )
 
 lazy val auth = (project in file("auth"))
