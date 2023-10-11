@@ -21,7 +21,6 @@ object HttpRoutes {
           )
           bytesCount <- req.body.asStream
             .via(JpegValidation.pipeline)
-            .via(ZPipeline.deflate())
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {
           case Right(bytesCount) if bytesCount <= 10 * 1024 * 1024 => Response.ok
