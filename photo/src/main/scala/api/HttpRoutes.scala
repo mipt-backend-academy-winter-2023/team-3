@@ -3,6 +3,8 @@ package photo.api
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths, Path}
 
+import photo.util.JpegValidation
+
 import zio._
 import zio.http._
 import zio.http.model.{Method, Status, Header, Headers}
@@ -28,7 +30,7 @@ object HttpRoutes {
           _ <- ZIO
             .attempt(Files.createFile(path))
           _ <- request.body.asStream
-            .via(ZPipeline.deflate())
+            .via(JpegValidation.pipeline)
             .run(ZSink.fromPath(path))
         } yield (nodeId)).either.map {
           case Left(e) =>
