@@ -6,8 +6,9 @@ https://edu.tinkoff.ru/educate/course/eff08434-6839-479d-817b-cdaf424aef7c/overv
 
 ### Куратор
 [Евгений Костарев](https://github.com/stackflow)
+tg: @stackflow
 
 ### Студенты
-[Артур Мухаметгалин](https://github.com/mukhametgalin)  
-[Игорь Абалымов](https://github.com/lelkok228)  
-[Олжас Турлыбеков](https://github.com/OvOlzhas)
+- [Артур Мухаметгалин](https://github.com/mukhametgalin)  
+- [Игорь Абалымов](https://github.com/lelkok228)  
+- [Олжас Турлыбеков](https://github.com/OvOlzhas)
