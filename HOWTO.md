@@ -1,11 +1,10 @@
 ## Как запустить проект
-- скопировать файл `./docker-compose/.env.example` в `./docker-compose/.env`
+- скопировать файл `./.env.example` в `./.env`
   ```shell
-  cp ./docker-compose/.env.example ./docker-compose/.env
+  cp ./.env.example ./.env
   ```
-- запустить `docker-compose.yml` в папке `./docker-compose`
+- запустить `compose.yaml`
   ```shell
-  cd ./docker-compose
   docker-compose up -d
   ```
 - по-умолчанию `auth-service` доступен на порту `8082`
