@@ -20,10 +20,10 @@ final class StreetsRepositoryImpl(
   override def findStreet(street: Street): ZStream[Any, Throwable, Street] = {
     val selectStreet = select(from_latitude, from_longitude, to_latitude, to_longitude)
       .from(streets)
-      .where(from_latitude == geoNode.from_latitude &&
-             from_longitude == geoNode.from_longitude &&
-             to_latitude == geoNode.to_latitude &&
-             to_longitude == geoNode.to_longitude)
+      .where(from_latitude === street.from_latitude &&
+             from_longitude === street.from_longitude &&
+             to_latitude === street.to_latitude &&
+             to_longitude === street.to_longitude)
 
     ZStream.fromZIO(
       ZIO.logInfo(s"Query to execute findStreet is ${renderRead(selectStreet)}")
@@ -32,15 +32,15 @@ final class StreetsRepositoryImpl(
         .provideSomeLayer(driverLayer)
   }
 
-  override def add(street: Street): ZIO[StreetsRepository, Throwable, Unit] = {
+  override def add(street: Street): ZIO[Any, Throwable, Unit] = {
     val query =
       insertInto(streets)(from_latitude, from_longitude, to_latitude, to_longitude)
         .values(
           (
-            streets.from_latitude,
-            streets.from_longitude,
-            streets.to_latitude,
-            streets.to_longitude
+            street.from_latitude,
+            street.from_longitude,
+            street.to_latitude,
+            street.to_longitude
           )
         )
 

@@ -1,5 +1,3 @@
-CREATE EXTENSION postgis;
-
 CREATE TABLE "street"
 (
     id       SERIAL PRIMARY KEY,

@@ -1,5 +1,3 @@
-CREATE EXTENSION postgis;
-
 CREATE TABLE "geonode"
 (
     id       SERIAL PRIMARY KEY,

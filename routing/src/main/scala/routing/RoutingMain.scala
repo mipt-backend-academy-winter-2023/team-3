@@ -8,7 +8,7 @@ import zio.http.Server
 import zio.sql.ConnectionPool
 import zio.{Scope, ZIO, ZIOAppArgs, ZIOAppDefault}
 
-object routingMain extends ZIOAppDefault {
+object RoutingMain extends ZIOAppDefault {
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = {
     val server =
       for {
@@ -22,7 +22,7 @@ object routingMain extends ZIOAppDefault {
       FlywayAdapter.live,
       Server.live,
       Config.serverLive,
-      UsersRepositoryImpl.live,
+      GeoNodesRepositoryImpl.live,
       ConnectionPool.live,
       Config.connectionPoolConfigLive,
     )

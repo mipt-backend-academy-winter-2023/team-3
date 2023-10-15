@@ -1,34 +1,52 @@
 version: "3.9"
 
 services:
-  database:
-    image: postgres
+  auth-database:
+    image: postgres:15-alpine
     env_file:
-      - database.env
+      - .env
+    environment:
+      - POSTGRES_USER=${AUTH_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${AUTH_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${AUTH_POSTGRES_DB}
     ports:
-      - "5432:5432"
-    volumes:
-      - database-data:/var/lib/postgresql/data/
+      - "${AUTH_POSTGRES_PORT}:5432"
 
-  auth:
+  auth-service:
     build:
       context: ..
       dockerfile: ./auth/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - AUTH_POSTGRES_HOST=auth-database
+      - AUTH_POSTGRES_PORT=5432
     ports:
-      - "8082:8082"
-    expose:
-      - "8082"
+      - "${AUTH_HTTP_PORT}:${AUTH_HTTP_PORT}"
     depends_on:
-      - database
+      - auth-database
 
-  routing:
+  routing-database:
+    image: postgres:15-alpine
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${ROUTING_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${ROUTING_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${ROUTING_POSTGRES_DB}
+    ports:
+      - "${ROUTING_POSTGRES_PORT}:5432"
+
+  routing-service:
     build:
       context: ..
       dockerfile: ./routing/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ROUTING_POSTGRES_HOST=routing-database
+      - ROUTING_POSTGRES_PORT=5432
     ports:
-      - "8081:8081"
-    expose:
-      - "8081"
-
-volumes:
-  database-data:
+      - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"
+    depends_on:
+      - routing-database
