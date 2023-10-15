@@ -1,5 +1,4 @@
 import Dependencies.{Auth, Helper, Routing, Image}
-
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.13.12"
