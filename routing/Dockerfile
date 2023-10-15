@@ -1,4 +1,4 @@
-FROM sbtscala/scala-sbt:eclipse-temurin-17.0.5_8_1.8.2_2.13.10 AS build
+FROM sbtscala/scala-sbt:eclipse-temurin-focal-17.0.8.1_1_1.9.6_2.13.12 AS build
 
 COPY . /root
 WORKDIR /root

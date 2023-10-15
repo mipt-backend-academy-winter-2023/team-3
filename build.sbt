@@ -1,19 +1,22 @@
-import Dependencies.{Auth, Routing, Helper}
+import Dependencies.{Auth, Helper, Routing}
 
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / scalaVersion := "2.13.12"
 
 ThisBuild / assemblyMergeStrategy := {
   case PathList("META-INF", xs@_*) =>
     xs.map(_.toLowerCase) match {
-      case "manifest.mf" :: Nil |
-           "index.list" :: Nil |
-           "dependencies" :: Nil => MergeStrategy.discard
-      case _ => MergeStrategy.first
+      case "manifest.mf" :: Nil | "index.list" :: Nil | "dependencies" :: Nil =>
+        MergeStrategy.discard
+      case _ =>
+        MergeStrategy.first
     }
   case x => (ThisBuild / assemblyMergeStrategy).value(x)
 }
+
+ThisBuild / javacOptions ++= Seq("-source", "17", "-target", "17")
+
 
 lazy val root = (project in file("."))
   .settings(

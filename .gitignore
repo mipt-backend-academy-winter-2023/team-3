@@ -2,11 +2,11 @@
 .idea/
 .bsp/
 out/
+tmp/
 
 # sbt
 target/
 project/project/
-project/target/
 
 # Scala
 *.class
