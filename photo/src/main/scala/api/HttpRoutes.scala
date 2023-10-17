@@ -12,6 +12,7 @@ object HttpRoutes {
 
   def getPath(x: String) = Paths.get(s"/${x}file")
 
+  val MAX_FILE_SIZE_MB = 10;
 
   val app: HttpApp[Any, Nothing] =
     Http.collectZIO[Request] {
@@ -27,20 +28,26 @@ object HttpRoutes {
           path = getPath(nodeId)
           _ <- ZIO
             .attempt(Files.createFile(path))
-          _ <- request.body.asStream
-            .via(ZPipeline.deflate())
+          fileSize <- request.body.asStream
             .run(ZSink.fromPath(path))
-        } yield (nodeId)).either.map {
+        } yield (nodeId, fileSize) ).either.map {
           case Left(e) =>
             Response(
               status = Status.BadRequest,
               body = Body.fromString(e.toString)
             )
-          case Right(nodeId) =>
-            Response(
-              status = Status.Created,
-              body = Body.fromString(nodeId)
-            )
+          case Right( (nodeId, fileSize) ) =>
+            if (fileSize > MAX_FILE_SIZE_MB * 1024 * 1024) {
+              Response(
+                status = Status.UnprocessableEntity,
+                body = Body.fromString("file too big")
+              )
+            } else {
+              Response(
+                status = Status.Created,
+                body = Body.fromString(nodeId)
+              )
+            }
         }
 
       case request @ Method.GET -> !! / "download" =>

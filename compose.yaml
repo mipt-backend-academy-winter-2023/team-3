@@ -50,3 +50,12 @@ services:
       - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"
     depends_on:
       - routing-database
+    
+  photo-service:
+    build:
+      context: .
+      dockerfile: ./photo/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"

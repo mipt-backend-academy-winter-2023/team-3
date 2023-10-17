@@ -54,7 +54,9 @@ lazy val routing = (project in file("routing"))
 lazy val photo = (project in file("photo"))
   .settings(
     name := "project-photo",
-    libraryDependencies ++= Photo.dependencies
+    libraryDependencies ++= Photo.dependencies,
+    assembly / assemblyJarName := "photo.jar",
+    assembly / mainClass := Some("photo.PhotoMain"),
   )
 
 lazy val helper = (project in file("helper"))

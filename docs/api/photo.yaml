@@ -58,6 +58,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: "../definitions.yaml#/components/schemas/Error"
+                "422":
+                    description: file is too big
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "../definitions.yaml#/components/schemas/Error"
 
 components:
     schemas:
