@@ -15,6 +15,10 @@ object Dependencies {
     override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig, flyway).flatten
   }
 
+  object Image extends Dependencies {
+    override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig, flyway).flatten
+  }
+
   object Helper extends Dependencies {
     override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig).flatten
   }
