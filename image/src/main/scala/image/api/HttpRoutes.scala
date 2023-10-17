@@ -1,5 +1,6 @@
 package image.api
 
+import image.validation.JpegValidation
 import zio.ZIO
 import zio.http._
 import zio.http.model.{Method, Status}
@@ -18,6 +19,7 @@ object HttpRoutes {
             )
           )
           bytesCount <- req.body.asStream
+            .via(JpegValidation.pipeline)
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {
           case Right(bytesCount) if bytesCount <= 10 * 1024 * 1024 => Response.ok
