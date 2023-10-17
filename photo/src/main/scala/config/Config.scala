@@ -17,7 +17,7 @@ object Config {
   val serverLive: ZLayer[Any, Nothing, ServerConfig] =
     zio.http.ServerConfig.live(
       http.ServerConfig.default.port(
-        source.loadOrThrow[ConfigImpl].httpServiceConfig.port
+        source.loadOrThrow[ConfigImpl].httpService.port
       )
     )
 
