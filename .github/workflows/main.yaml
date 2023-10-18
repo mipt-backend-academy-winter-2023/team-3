@@ -22,9 +22,9 @@ jobs:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
     
-    lint:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - name: Format code
-          run: sbt scalafmtCheckAll test:scalafmtCheckAll
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Format code
+        run: sbt scalafmtCheckAll test:scalafmtCheckAll
