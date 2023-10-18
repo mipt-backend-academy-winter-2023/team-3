@@ -11,6 +11,11 @@ services:
       - POSTGRES_DB=${AUTH_POSTGRES_DB}
     ports:
       - "${AUTH_POSTGRES_PORT}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   auth-service:
     build:
@@ -24,7 +29,8 @@ services:
     ports:
       - "${AUTH_HTTP_PORT}:${AUTH_HTTP_PORT}"
     depends_on:
-      - auth-database
+      auth-database:
+        condition: service_healthy
 
   routing-database:
     image: postgres:15-alpine
@@ -36,6 +42,11 @@ services:
       - POSTGRES_DB=${ROUTING_POSTGRES_DB}
     ports:
       - "${ROUTING_POSTGRES_PORT}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   routing-service:
     build:
@@ -49,4 +60,5 @@ services:
     ports:
       - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"
     depends_on:
-      - routing-database
+      routing-database:
+        condition: service_healthy
