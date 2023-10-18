@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - main
+      - homework-ci-cd
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: restore deps
+        uses: actions/cache/restore@v3
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+      - name: Run local tests
+        run: sbt test
+      - name: cache deps
+        uses: actions/cache/save@v3
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+    
+    lint:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Format code
+          run: sbt scalafmtCheckAll test:scalafmtCheckAll
