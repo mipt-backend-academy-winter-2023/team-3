@@ -24,7 +24,7 @@ object Config {
 }
 
 case class ConfigImpl(
-                       httpServiceConfig: HttpServerConfig
+                       httpService: HttpServerConfig
                      )
 
 
