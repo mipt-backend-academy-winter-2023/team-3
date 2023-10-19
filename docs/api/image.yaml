@@ -41,6 +41,38 @@ paths:
               schema:
                 $ref: "../definitions.yaml#/components/schemas/Error"
 
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions.yaml#/components/schemas/Error"
+
+  /download/{node_id}:
+    get:
+      summary: You can download one jpeg photo of a house or intersection.
+
+      security:
+        - bearerAuth: [ ]
+
+      responses:
+        "200":
+          description: Image downloaded successfully
+
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions.yaml#/components/schemas/Error"
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions.yaml#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
