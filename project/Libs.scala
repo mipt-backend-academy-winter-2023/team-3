@@ -10,13 +10,12 @@ object V {
   val jwtCore = "9.2.0"
 }
 
-
 object Libs {
 
   val zio: List[ModuleID] = List(
     "dev.zio" %% "zio" % V.zio,
     "dev.zio" %% "zio-http" % V.zioHttp,
-    "dev.zio" %% "zio-sql-postgres" % V.zioSql,
+    "dev.zio" %% "zio-sql-postgres" % V.zioSql
   )
 
   val flyway: List[ModuleID] = List(

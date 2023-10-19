@@ -12,7 +12,7 @@ import java.nio.file.{Files, Paths}
 object HttpRoutes {
   val app: HttpApp[Any, Response] =
     Http.collectZIO[Request] {
-      case req@Method.PUT -> !! / "upload" / id =>
+      case req @ Method.PUT -> !! / "upload" / id =>
         (for {
           path <- ZIO.attempt(
             Files.createFile(
@@ -28,7 +28,7 @@ object HttpRoutes {
             Files.deleteIfExists(Paths.get("images/" + id))
             Response.status(Status.UnprocessableEntity)
         }
-      case req@Method.GET -> !! / "download" / id =>
+      case req @ Method.GET -> !! / "download" / id =>
         val imagePath = Paths.get("./images/" + id + ".jpeg")
         if (Files.exists(imagePath)) {
           ZIO.succeed(

@@ -24,7 +24,7 @@ object RoutingMain extends ZIOAppDefault {
       Config.serverLive,
       GeoNodesRepositoryImpl.live,
       ConnectionPool.live,
-      Config.connectionPoolConfigLive,
+      Config.connectionPoolConfigLive
     )
   }
 }

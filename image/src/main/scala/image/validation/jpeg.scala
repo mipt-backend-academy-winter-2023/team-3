@@ -12,14 +12,12 @@ object JpegValidation {
   object Error {
     case object Invalid extends Exception("This is not JPEG") with Error
 
-    case object EmptyStream
-      extends Exception("Input stream is empty")
-        with Error
+    case object EmptyStream extends Exception("Input stream is empty") with Error
   }
 
   private def aux(
-                   buffer: Chunk[Byte]
-                 ): ZChannel[Any, Error, Chunk[Byte], Any, Error, Chunk[Byte], Any] = {
+      buffer: Chunk[Byte]
+  ): ZChannel[Any, Error, Chunk[Byte], Any, Error, Chunk[Byte], Any] = {
     ZChannel
       .readOrFail[Error, Chunk[Byte]](Error.EmptyStream)
       .flatMap { in =>

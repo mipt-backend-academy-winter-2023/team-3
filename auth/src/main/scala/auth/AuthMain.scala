@@ -24,7 +24,7 @@ object AuthMain extends ZIOAppDefault {
       Config.serverLive,
       UsersRepositoryImpl.live,
       ConnectionPool.live,
-      Config.connectionPoolConfigLive,
+      Config.connectionPoolConfigLive
     )
   }
 }
