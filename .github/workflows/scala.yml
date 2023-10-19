@@ -30,8 +30,8 @@ jobs:
       - name: Build project
         run: sbt compile
 
-      - name: Run tests
-        run: sbt test
-
       - name: Check code formatting
         run: sbt scalafmtCheckAll
+
+      - name: Run tests
+        run: sbt test
