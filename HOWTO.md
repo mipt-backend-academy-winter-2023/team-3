@@ -3,9 +3,13 @@
   ```shell
   cp ./.env.example ./.env
   ```
-- запустить `compose.yaml`
+- запустить сервисы, используя `compose.yaml`
   ```shell
-  docker-compose up -d
+  docker-compose up --build -d
   ```
-- по-умолчанию `auth-service` доступен на порту `8082`
-- по-умолчанию `routing-service` доступен на порту `8084`
+  - по-умолчанию `auth-service` доступен на порту `8082`
+  - по-умолчанию `routing-service` доступен на порту `8084`
+- остановить сервисы, используя `compose.yaml`
+  ```shell
+  docker-compose down
+  ```
