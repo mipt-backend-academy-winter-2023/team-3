@@ -58,4 +58,4 @@ services:
     env_file:
       - .env
     ports:
-      - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"
+      - "${PHOTO_HTTP_PORT}:${PHOTO_HTTP_PORT}"

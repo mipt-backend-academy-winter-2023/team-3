@@ -14,7 +14,7 @@ paths:
             requestBody:
                 required: true
                 content:
-                    image/png:
+                    image/jpeg:
                         schema:
                             type: string
                             format: binary
@@ -34,6 +34,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: "../definitions.yaml#/components/schemas/Error"
+                "422":
+                    description: file is too big
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "../definitions.yaml#/components/schemas/Error"
+
     /download:
         get:
             description: get image by node id
@@ -58,22 +65,3 @@ paths:
                         application/json:
                             schema:
                                 $ref: "../definitions.yaml#/components/schemas/Error"
-                "422":
-                    description: file is too big
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "../definitions.yaml#/components/schemas/Error"
-
-components:
-    schemas:
-        UserData:
-            type: object
-            required:
-                - login
-                - password
-            properties:
-                login:
-                    type: string
-                password:
-                    type: string

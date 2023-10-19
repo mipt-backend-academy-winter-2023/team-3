@@ -16,7 +16,7 @@ object Dependencies {
   }
 
   object Photo extends Dependencies {
-    override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig, circe).flatten
+    override def dependencies: Seq[ModuleID] = Seq(zio, pureconfig).flatten
   }
 
   object Helper extends Dependencies {
