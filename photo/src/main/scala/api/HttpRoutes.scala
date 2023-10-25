@@ -5,8 +5,11 @@ import java.nio.file.{Files, Paths, Path}
 
 import zio._
 import zio.http._
-import zio.http.model.{Method, Status, Header, Headers}
+import zio.http.model.{Method, Status, Header, Headers, HeaderValues}
 import zio.stream.{ZSink, ZStream, ZPipeline}
+
+import java.io.File
+import java.nio.file.{Files, Paths}
 
 object HttpRoutes {
 
@@ -69,12 +72,8 @@ object HttpRoutes {
             val path = getPath(nodeId)
             if (Files.exists(path)) {
               Response(
-                body = Body.fromStream(
-                  ZStream
-                    .fromPath(path)
-                    .via(ZPipeline.inflate())
-                ) 
-              )
+                body = Body.fromFile(new File(path.toAbsolutePath.toString)),
+              ).addHeader("content-type", "image/jpeg")
             } else {
               Response(status = Status.BadRequest)
             }
