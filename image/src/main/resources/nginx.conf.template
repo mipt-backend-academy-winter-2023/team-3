@@ -1,0 +1,15 @@
+upstream image {
+    server image-service1:${IMAGE1_HTTP_PORT};
+    server image-service2:${IMAGE2_HTTP_PORT};
+    server image-service3:${IMAGE3_HTTP_PORT};
+}
+
+server {
+    listen ${BALANCER_HTTP_PORT};
+
+    location / {
+        proxy_pass http://image;
+        proxy_next_upstream error timeout;
+        proxy_connect_timeout 1s;
+    }
+}

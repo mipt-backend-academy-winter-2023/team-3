@@ -63,11 +63,46 @@ services:
       routing-database:
         condition: service_healthy
 
-  image-service:
+  image-balancer:
+    image: nginx
+    env_file:
+      - .env
+    ports:
+      - "${BALANCER_HTTP_PORT}:${BALANCER_HTTP_PORT}"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "./image/src/main/resources/nginx.conf.template:/etc/nginx/conf.d/nginx.conf.template"
+    command: /bin/bash -c "envsubst < etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+
+  image-service1:
     build:
       context: .
       dockerfile: ./image/Dockerfile
     env_file:
       - .env
+    environment:
+      - IMAGE_HTTP_PORT=${IMAGE1_HTTP_PORT}
     ports:
-      - "${IMAGE_HTTP_PORT}:${IMAGE_HTTP_PORT}"
+      - "${IMAGE1_HTTP_PORT}:${IMAGE1_HTTP_PORT}"
+
+  image-service2:
+    build:
+      context: .
+      dockerfile: ./image/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - IMAGE_HTTP_PORT=${IMAGE2_HTTP_PORT}
+    ports:
+      - "${IMAGE2_HTTP_PORT}:${IMAGE2_HTTP_PORT}"
+
+  image-service3:
+    build:
+      context: .
+      dockerfile: ./image/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - IMAGE_HTTP_PORT=${IMAGE3_HTTP_PORT}
+    ports:
+      - "${IMAGE3_HTTP_PORT}:${IMAGE3_HTTP_PORT}"
