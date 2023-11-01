@@ -20,16 +20,20 @@ object HttpRoutes {
         ensureDirectoryExists(path.getParent)
         (for {
           _ <- ZIO.attempt(Files.createFile(path)).mapError(_ => FileAlreadyExistError)
-          bytesCount <- req.body.asStream
+          _ <- req.body.asStream
             .via(JpegValidation.pipeline)
+            .run(ZSink.drain)
+          bytesCount <- req.body.asStream
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {
           case Right(bytesCount) if bytesCount <= MaxFileSize => Response.ok
           case Left(FileAlreadyExistError) =>
-            Response.status(Status.BadRequest)
+            Response.apply(status = Status.BadRequest, body = Body.fromString("File is already exist"))
+          case Left(err) =>
+            Response.apply(status = Status.BadRequest, body = Body.fromString(err.toString))
           case _ =>
             Files.deleteIfExists(path)
-            Response.status(Status.UnprocessableEntity)
+            Response.apply(status = Status.UnprocessableEntity, body = Body.fromString("The file size exceeds 10 MB"))
         }
       case _ @Method.GET -> !! / "download" / id =>
         val path = getPath(id)
