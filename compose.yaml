@@ -62,3 +62,12 @@ services:
     depends_on:
       routing-database:
         condition: service_healthy
+
+  image-service:
+    build:
+      context: .
+      dockerfile: ./image/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${IMAGE_HTTP_PORT}:${IMAGE_HTTP_PORT}"
