@@ -11,16 +11,14 @@ import java.util.Properties
 object Config {
   private val basePath = "app"
   private val source = ConfigSource.default.at(basePath)
+  private val serviceConfig = source.loadOrThrow[ConfigImpl].httpService
 
-
-
-  val serverLive: ZLayer[Any, Nothing, ServerConfig] =
-    zio.http.ServerConfig.live(
-      http.ServerConfig.default.port(
-        source.loadOrThrow[ConfigImpl].httpService.port
-      )
-    )
-
+  val serverLive: ZLayer[Any, Nothing, ServerConfig] = zio.http.ServerConfig.live {
+    http
+      .ServerConfig
+      .default
+      .binding(serviceConfig.host, serviceConfig.port)
+  }
 }
 
 case class ConfigImpl(

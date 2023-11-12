@@ -72,8 +72,13 @@ object HttpRoutes {
             val path = getPath(nodeId)
             if (Files.exists(path)) {
               Response(
-                body = Body.fromFile(new File(path.toAbsolutePath.toString)),
-              ).addHeader("content-type", "image/jpeg")
+                status = Status.Ok,
+                body = Body.fromStream(ZStream.fromFile(new File(path.toAbsolutePath.toString))),
+                headers = Headers(
+                  Header("Content-Type", "image/jpeg"),
+                  Header("Content-Length", Files.size(path).toString)
+                )
+              )
             } else {
               Response(status = Status.BadRequest)
             }
