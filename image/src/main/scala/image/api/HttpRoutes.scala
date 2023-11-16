@@ -20,17 +20,15 @@ object HttpRoutes {
         ensureDirectoryExists(path.getParent)
         (for {
           _ <- ZIO.attempt(Files.createFile(path)).mapError(_ => FileAlreadyExistError)
-          _ <- req.body.asStream
-            .via(JpegValidation.pipeline)
-            .run(ZSink.drain)
           bytesCount <- req.body.asStream
+            .via(JpegValidation.pipeline)
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {
           case Right(bytesCount) if bytesCount <= MaxFileSize =>
             Response(
               status = Status.Ok,
               headers = Headers(
-                Header("Content-Length", Files.size(path).toString)
+                List(Header("Content-Length", Files.size(path).toString))
               ),
               body = Body.fromString("Success")
             )
