@@ -31,4 +31,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Format code
-        run: sbt scalafmtCheckAll test:scalafmtCheckAll
+        run: sbt scalafmtCheckAll
