@@ -23,16 +23,16 @@ trait TestData {
     Body.fromString(json.noSpaces)
   }
 
-  def StatusCreated(response: Response) = 
+  def statusCreated(response: Response) = 
     response.status == Status.Created
 
-  def StatusOk(response: Response) = 
+  def statusOk(response: Response) = 
     response.status == Status.Ok
 
-  def StatusBadRequest(response: Response) =
+  def statusBadRequest(response: Response) =
     response.status == Status.BadRequest
 
-  def StatusUnauthorized(response: Response) =
+  def statusUnauthorized(response: Response) =
     response.status == Status.Unauthorized
 
   def register(user: User) =
@@ -59,8 +59,8 @@ object RegisterTests extends ZIOSpecDefault with TestData {
         user1_register_again <- register(user1)
       } yield {
         assertTrue(
-          StatusCreated(user1_register)
-          && StatusBadRequest(user1_register_again)
+          statusCreated(user1_register)
+          && statusBadRequest(user1_register_again)
         )
       }).provideLayer(
         ZLayer.succeed(new MockUserRepository(mutable.HashMap.empty))
@@ -80,10 +80,10 @@ object LogInTests extends ZIOSpecDefault with TestData {
         user1_login_bad_password <- login(user1_fake_password)
       } yield {
         assertTrue(
-            StatusUnauthorized(user1_login)
-            && StatusCreated(user1_register)
-            && StatusOk(user1_login_again)
-            && StatusUnauthorized(user1_login_bad_password)
+            statusUnauthorized(user1_login)
+            && statusCreated(user1_register)
+            && statusOk(user1_login_again)
+            && statusUnauthorized(user1_login_bad_password)
         )
       }).provideLayer(
         ZLayer.succeed(new MockUserRepository(mutable.HashMap.empty))
