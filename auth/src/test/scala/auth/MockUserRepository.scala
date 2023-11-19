@@ -25,7 +25,7 @@ final class MockUserRepository(users: mutable.Map[String, User])
       }
       ZStream.fromZIO(ZIO.succeed(user))
     } catch {
-      case _ => ZStream.empty
+      case _: Throwable => ZStream.empty
     }
   }
 }

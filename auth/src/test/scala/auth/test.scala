@@ -27,10 +27,13 @@ trait TestData {
     response.status == Status.Created
 
   def StatusOk(response: Response) = 
-    response.status == Status.Created
+    response.status == Status.Ok
 
   def StatusBadRequest(response: Response) =
     response.status == Status.BadRequest
+
+  def StatusUnauthorized(response: Response) =
+    response.status == Status.Unauthorized
 
   def register(user: User) =
     HttpRoutes.app.runZIO(
@@ -71,12 +74,16 @@ object LogInTests extends ZIOSpecDefault with TestData {
   def spec = suite("login:")(
     test("tests:") {
       (for {
-        user1_register <- register(user1)
         user1_login <- login(user1)
+        user1_register <- register(user1)
+        user1_login_again <- login(user1)
+        user1_login_bad_password <- login(user1_fake_password)
       } yield {
         assertTrue(
-            StatusCreated(user1_register)
-            && StatusOk(user1_login)
+            StatusUnauthorized(user1_login)
+            && StatusCreated(user1_register)
+            && StatusOk(user1_login_again)
+            && StatusUnauthorized(user1_login_bad_password)
         )
       }).provideLayer(
         ZLayer.succeed(new MockUserRepository(mutable.HashMap.empty))
