@@ -28,8 +28,6 @@ object HttpRoutes {
           case Right(bytesCount) if bytesCount <= MaxFileSize =>
             Response(
               status = Status.Ok,
-              headers = Headers(
-                List(Header("Content-Length", Files.size(path).toString))),
               body = Body.fromString("Success")
             )
           case Left(FileAlreadyExistError) =>
@@ -43,7 +41,11 @@ object HttpRoutes {
       case _ @Method.GET -> !! / "download" / id =>
         val path = getPath(id)
         if (Files.exists(path)) {
-          ZIO.succeed(Response(status = Status.Ok, body = Body.fromStream(ZStream.fromFile(path.toFile))))
+          ZIO.succeed(Response(
+            status = Status.Ok,
+            body = Body.fromStream(ZStream.fromFile(path.toFile)),
+            headers = Headers.contentLength(Files.size(path))
+          ))
         } else {
           ZIO.succeed(Response.status(Status.NotFound))
         }
