@@ -13,7 +13,7 @@ object RoutingMain extends ZIOAppDefault {
     val server =
       for {
         flyway <- ZIO.service[FlywayAdapter.Service]
-        _ <- flyway.migration
+        _      <- flyway.migration
         server <- zio.http.Server.serve(HttpRoutes.app)
       } yield server
 
@@ -24,7 +24,7 @@ object RoutingMain extends ZIOAppDefault {
       Config.serverLive,
       GeoNodesRepositoryImpl.live,
       ConnectionPool.live,
-      Config.connectionPoolConfigLive,
+      Config.connectionPoolConfigLive
     )
   }
 }

@@ -12,11 +12,11 @@ import zio.http.model.{Method, Status}
 object HttpRoutes {
   val app: HttpApp[UsersRepository, Response] =
     Http.collectZIO[Request] {
-      case req@Method.POST -> !! / "auth" / "v1" / "login" =>
+      case req @ Method.POST -> !! / "auth" / "v1" / "login" =>
         (for {
           bodyStr <- req.body.asString
-          user <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
-          found <- UsersRepository.findUser(user).runHead
+          user    <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
+          found   <- UsersRepository.findUser(user).runHead
         } yield (found, user)).either.map {
           case Right((found, user)) =>
             found match {
@@ -28,16 +28,17 @@ object HttpRoutes {
           case Left(_) => Response.status(Status.BadRequest)
         }
 
-      case req@Method.POST -> !! / "auth" / "v1" / "register" =>
+      case req @ Method.POST -> !! / "auth" / "v1" / "register" =>
         (for {
           bodyStr <- req.body.asString
-          user <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
-          _ <- UsersRepository.add(user)
+          user    <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
+          _ <- UsersRepository
+            .add(user)
             .tapError(e => ZIO.logInfo(s"User '${user.login}' already exist(${e.getMessage})"))
           _ <- ZIO.logInfo(s"Created new user '${user.login}'")
         } yield ()).either.map {
           case Right(_) => Response.status(Status.Created)
-          case Left(_) => Response.status(Status.BadRequest)
+          case Left(_)  => Response.status(Status.BadRequest)
         }
     }
 }

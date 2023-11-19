@@ -16,9 +16,9 @@ object PasswordEncryptor {
   def encode(password: String): String = {
     cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
-    val plainTextByte = password.getBytes
-    val encryptedByte = cipher.doFinal(plainTextByte)
-    val encoder = Base64.getEncoder
+    val plainTextByte         = password.getBytes
+    val encryptedByte         = cipher.doFinal(plainTextByte)
+    val encoder               = Base64.getEncoder
     val encryptedText: String = encoder.encodeToString(encryptedByte)
 
     encryptedText
@@ -27,10 +27,10 @@ object PasswordEncryptor {
   def decode(encryptedText: String): String = {
     cipher.init(Cipher.DECRYPT_MODE, secretKey)
 
-    val decoder = Base64.getDecoder
+    val decoder           = Base64.getDecoder
     val encryptedTextByte = decoder.decode(encryptedText)
-    val decryptedByte = cipher.doFinal(encryptedTextByte)
-    val decryptedText = new String(decryptedByte)
+    val decryptedByte     = cipher.doFinal(encryptedTextByte)
+    val decryptedText     = new String(decryptedByte)
 
     decryptedText
   }

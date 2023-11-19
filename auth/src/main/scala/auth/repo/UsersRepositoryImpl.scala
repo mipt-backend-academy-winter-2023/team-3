@@ -6,9 +6,9 @@ import zio.stream.ZStream
 import zio.{ZIO, ZLayer}
 
 final class UsersRepositoryImpl(
-                                 pool: ConnectionPool
-                               ) extends UsersRepository
-  with PostgresTableDescription {
+    pool: ConnectionPool
+) extends UsersRepository
+    with PostgresTableDescription {
 
   val driverLayer: ZLayer[Any, Nothing, SqlDriver] =
     ZLayer
@@ -38,7 +38,6 @@ final class UsersRepositoryImpl(
             PasswordEncryptor.encode(user.password)
           )
         )
-
 
     ZIO.logInfo(s"Query to insert user is ${renderInsert(query)}") *>
       execute(query)

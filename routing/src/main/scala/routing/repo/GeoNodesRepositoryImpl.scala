@@ -6,9 +6,9 @@ import zio.stream.ZStream
 import zio.{ZIO, ZLayer}
 
 final class GeoNodesRepositoryImpl(
-                                 pool: ConnectionPool
-                               ) extends GeoNodesRepository
-  with PostgresTableDescription {
+    pool: ConnectionPool
+) extends GeoNodesRepository
+    with PostgresTableDescription {
 
   val driverLayer: ZLayer[Any, Nothing, SqlDriver] =
     ZLayer
@@ -41,7 +41,6 @@ final class GeoNodesRepositoryImpl(
             geoNode.longitude
           )
         )
-
 
     ZIO.logInfo(s"Query to insert geoNode is ${renderInsert(query)}") *>
       execute(query)
