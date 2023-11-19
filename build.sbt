@@ -39,6 +39,7 @@ lazy val auth = (project in file("auth"))
   .settings(
     name := "project-auth",
     libraryDependencies ++= Auth.dependencies,
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
     assembly / assemblyJarName := "auth.jar",
     assembly / mainClass := Some("auth.AuthMain"),
   )

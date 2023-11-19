@@ -17,12 +17,12 @@ object HttpRoutes {
           bodyStr <- req.body.asString
           user <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
           found <- UsersRepository.findUser(user).runHead
-        } yield found).either.map {
-          case Right(user) =>
-            user match {
-              case Some(_) => Response.json(s"{\"token\": \"${JwtService.encode(user.get.login)}\"}")
+        } yield (found, user)).either.map {
+          case Right((found, user)) =>
+            found match {
+              case Some(real_user) => Response.json(s"{\"token\": \"${JwtService.encode(real_user.login)}\"}")
               case None =>
-                ZIO.logInfo(s"User '${user.get.login}' not found")
+                ZIO.logInfo(s"User '${user.login}' not found")
                 Response.status(Status.Unauthorized)
             }
           case Left(_) => Response.status(Status.BadRequest)
