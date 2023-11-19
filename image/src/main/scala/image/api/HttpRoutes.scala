@@ -7,6 +7,8 @@ import zio.stream.{ZSink, ZStream}
 
 import java.nio.file.{Files, Path, Paths}
 
+import image.util.JpegValidation
+
 case object FileAlreadyExistError
 
 object HttpRoutes {
@@ -20,14 +22,14 @@ object HttpRoutes {
         (for {
           _ <- ZIO.attempt(Files.createFile(path)).mapError(_ => FileAlreadyExistError)
           bytesCount <- req.body.asStream
+            .via(JpegValidation.pipeline)
             .run(ZSink.fromPath(path))
         } yield bytesCount).either.map {
           case Right(bytesCount) if bytesCount <= MaxFileSize =>
             Response(
               status = Status.Ok,
               headers = Headers(
-                Header("Content-Length", Files.size(path).toString)
-              ),
+                List(Header("Content-Length", Files.size(path).toString))),
               body = Body.fromString("Success")
             )
           case Left(FileAlreadyExistError) =>
