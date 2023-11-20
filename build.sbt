@@ -24,12 +24,14 @@ lazy val root = (project in file("."))
   .aggregate(
     auth,
     routing,
-    helper
+    image,
+    helper,
   )
   .dependsOn(
     auth,
     routing,
-    helper
+    image,
+    helper,
   )
 
 lazy val auth = (project in file("auth"))
@@ -54,6 +56,14 @@ lazy val image = (project in file("image"))
     libraryDependencies ++= Image.dependencies,
     assembly / assemblyJarName := "image.jar",
     assembly / mainClass := Some("image.ImageMain")
+  )
+
+lazy val image = (project in file("image"))
+  .settings(
+    name := "project-image",
+    libraryDependencies ++= Image.dependencies,
+    assembly / assemblyJarName := "image.jar",
+    assembly / mainClass := Some("image.ImageMain"),
   )
 
 lazy val helper = (project in file("helper"))
