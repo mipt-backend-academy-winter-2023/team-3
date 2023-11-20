@@ -1,20 +1,20 @@
 import sbt.*
 
 object V {
-  val zio = "2.0.13"
-  val zioHttp = "0.0.5"
-  val flyway = "9.16.0"
-  val zioSql = "0.1.2"
+  val zio        = "2.0.13"
+  val zioHttp    = "0.0.5"
+  val flyway     = "9.16.0"
+  val zioSql     = "0.1.2"
   val pureconfig = "0.17.3"
-  val circe = "0.14.1"
-  val jwtCore = "9.2.0"
+  val circe      = "0.14.1"
+  val jwtCore    = "9.2.0"
 }
 
 object Libs {
 
   val zio: List[ModuleID] = List(
-    "dev.zio" %% "zio" % V.zio,
-    "dev.zio" %% "zio-http" % V.zioHttp,
+    "dev.zio" %% "zio"              % V.zio,
+    "dev.zio" %% "zio-http"         % V.zioHttp,
     "dev.zio" %% "zio-sql-postgres" % V.zioSql
   )
 

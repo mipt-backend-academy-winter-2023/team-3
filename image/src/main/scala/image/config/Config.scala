@@ -8,7 +8,7 @@ import zio.{ZLayer, http}
 case class Config(host: String, port: Int)
 
 object ServiceConfig {
-  private val source = ConfigSource.default.at("app").at("http-service")
+  private val source                = ConfigSource.default.at("app").at("http-service")
   private val serviceConfig: Config = source.loadOrThrow[Config]
 
   val live: ZLayer[Any, Nothing, ServerConfig] = zio.http.ServerConfig.live {

@@ -15,8 +15,8 @@ object HttpRoutes {
       case req @ Method.POST -> !! / "auth" / "v1" / "login" =>
         (for {
           bodyStr <- req.body.asString
-          user <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
-          found <- UsersRepository.findUser(user).runHead
+          user    <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
+          found   <- UsersRepository.findUser(user).runHead
         } yield found).either.map {
           case Right(user) =>
             user match {
@@ -31,7 +31,7 @@ object HttpRoutes {
       case req @ Method.POST -> !! / "auth" / "v1" / "register" =>
         (for {
           bodyStr <- req.body.asString
-          user <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
+          user    <- ZIO.fromEither(decode[User](bodyStr)).tapError(e => ZIO.logError(e.getMessage))
           _ <- UsersRepository
             .add(user)
             .tapError(e => ZIO.logInfo(s"User '${user.login}' already exist(${e.getMessage})"))

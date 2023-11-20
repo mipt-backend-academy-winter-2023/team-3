@@ -10,7 +10,7 @@ import java.util.Properties
 
 object Config {
   private val basePath = "app"
-  private val source = ConfigSource.default.at(basePath)
+  private val source   = ConfigSource.default.at(basePath)
 
   val dbLive: ULayer[DbConfig] = {
     import ConfigImpl._

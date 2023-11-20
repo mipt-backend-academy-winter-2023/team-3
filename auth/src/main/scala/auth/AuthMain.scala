@@ -13,7 +13,7 @@ object AuthMain extends ZIOAppDefault {
     val server =
       for {
         flyway <- ZIO.service[FlywayAdapter.Service]
-        _ <- flyway.migration
+        _      <- flyway.migration
         server <- zio.http.Server.serve(HttpRoutes.app)
       } yield server
 

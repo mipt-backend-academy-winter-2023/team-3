@@ -39,7 +39,7 @@ lazy val auth = (project in file("auth"))
     name := "project-auth",
     libraryDependencies ++= Auth.dependencies,
     assembly / assemblyJarName := "auth.jar",
-    assembly / mainClass := Some("auth.AuthMain")
+    assembly / mainClass       := Some("auth.AuthMain")
   )
 
 lazy val routing = (project in file("routing"))
@@ -47,7 +47,7 @@ lazy val routing = (project in file("routing"))
     name := "project-routing",
     libraryDependencies ++= Routing.dependencies,
     assembly / assemblyJarName := "routing.jar",
-    assembly / mainClass := Some("routing.RoutingMain")
+    assembly / mainClass       := Some("routing.RoutingMain")
   )
 
 lazy val image = (project in file("image"))
@@ -55,7 +55,7 @@ lazy val image = (project in file("image"))
     name := "project-image",
     libraryDependencies ++= Image.dependencies,
     assembly / assemblyJarName := "image.jar",
-    assembly / mainClass := Some("image.ImageMain")
+    assembly / mainClass       := Some("image.ImageMain")
   )
 
 lazy val helper = (project in file("helper"))

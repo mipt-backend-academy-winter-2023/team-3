@@ -9,7 +9,7 @@ object JpegValidation {
 
   sealed trait Error extends Throwable
   object Error {
-    case object Invalid extends Exception("This is not JPEG") with Error
+    case object Invalid     extends Exception("This is not JPEG") with Error
     case object EmptyStream extends Exception("Input stream is empty") with Error
   }
 
