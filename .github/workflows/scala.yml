@@ -2,19 +2,49 @@ name: Scala CI
 
 on:
   push:
-    branches: [ "master", "turlybekovol-ci", "release/turlybkevol/**" ]
+    branches: [ "main", "release/turlybkevol/**" ]
+  pull_request:
+    branches: [ "main", "release/turlybkevol/**" ]
 
 jobs:
+  check-code-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Scala
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Cache SBT
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.ivy2/cache
+            ~/.sbt
+            ~/.cache/coursier
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+          restore-keys: |
+            ${{ runner.os }}-sbt-
+
+      - name: Check code formatting
+        run: sbt scalafmtCheckAll
+
   build-and-test:
+    needs: check-code-formatting
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'temurin'
 
       - name: Cache SBT
@@ -32,30 +62,3 @@ jobs:
 
       - name: Run tests
         run: sbt test
-
-  check-code-formatting:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Scala
-        uses: actions/setup-java@v2
-        with:
-          java-version: 11
-          distribution: 'temurin'
-
-      - name: Cache SBT
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.ivy2/cache
-            ~/.sbt
-            ~/.cache/coursier
-          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
-          restore-keys: |
-            ${{ runner.os }}-sbt-
-
-      - name: Check code formatting
-        run: sbt scalafmtCheckAll
