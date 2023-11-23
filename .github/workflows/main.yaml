@@ -9,7 +9,15 @@ on:
       - reopened
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Format code
+        run: sbt scalafmtCheckAll
+
   test:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,12 +31,8 @@ jobs:
       - name: cache deps
         uses: actions/cache/save@v3
         with:
-          path: ~/.sbt
+          path: |
+            ~/.ivy2/cache
+            ~/.sbt
+            ~/.cache/coursier/v1
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
-    
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Format code
-        run: sbt scalafmtCheckAll
