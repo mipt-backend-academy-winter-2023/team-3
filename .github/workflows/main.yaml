@@ -27,7 +27,8 @@ jobs:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: Run local tests
-        run: sbt test
+        uses: actions/setup-java@v3
+        run: sbt -v test
       - name: cache deps
         uses: actions/cache/save@v3
         with:
