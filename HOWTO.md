@@ -14,4 +14,4 @@
 - остановить сервисы, используя `compose.yaml`
   ```shell
   docker-compose down
-  ``` 
+  ```
