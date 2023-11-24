@@ -26,7 +26,10 @@ jobs:
       - name: restore deps
         uses: actions/cache/restore@v3
         with:
-          path: ~/.sbt
+          path: |
+            ~/.ivy2/cache
+            ~/.sbt
+            ~/.cache/coursier/v1
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: setup java
         uses: actions/setup-java@v3
