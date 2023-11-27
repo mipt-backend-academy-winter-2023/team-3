@@ -41,11 +41,13 @@ object HttpRoutes {
       case _ @Method.GET -> !! / "download" / id =>
         val path = getPath(id)
         if (Files.exists(path)) {
-          ZIO.succeed(Response(
-            status = Status.Ok,
-            body = Body.fromStream(ZStream.fromFile(path.toFile)),
-            headers = Headers.contentLength(Files.size(path))
-          ))
+          ZIO.succeed(
+            Response(
+              status = Status.Ok,
+              body = Body.fromStream(ZStream.fromFile(path.toFile)),
+              headers = Headers.contentLength(Files.size(path))
+            )
+          )
         } else {
           ZIO.succeed(Response.status(Status.NotFound))
         }

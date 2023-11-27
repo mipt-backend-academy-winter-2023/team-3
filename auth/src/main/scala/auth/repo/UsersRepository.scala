@@ -6,9 +6,9 @@ import zio.stream.ZStream
 
 trait UsersRepository {
 
-  def findUser(user: User): ZStream[Any, Throwable, User]
+  def findUser(user: User): ZStream[UsersRepository, Throwable, User]
 
-  def add(user: User): ZIO[Any, Throwable, Unit]
+  def add(user: User): ZIO[UsersRepository, Throwable, Unit]
 }
 
 object UsersRepository {

@@ -10,10 +10,8 @@ object JpegValidation {
 
   sealed trait Error extends Throwable
   object Error {
-    case object Invalid extends Exception("This is not JPEG") with Error
-    case object EmptyStream
-        extends Exception("Input stream is empty")
-        with Error
+    case object Invalid     extends Exception("This is not JPEG") with Error
+    case object EmptyStream extends Exception("Input stream is empty") with Error
   }
 
   private def aux(
@@ -25,7 +23,7 @@ object JpegValidation {
         val data = buffer ++ in
         if (data.length < JpegHeader.length) {
           aux(data)
-        } else if (data.take(JpegHeader.length) == JpegHeader) { 
+        } else if (data.take(JpegHeader.length) == JpegHeader) {
           ZChannel.write(data) *> ZChannel.identity[Error, Chunk[Byte], Any]
         } else {
           ZChannel.fail(Error.Invalid)

@@ -10,7 +10,7 @@ import java.util.Properties
 
 object Config {
   private val basePath = "app"
-  private val source = ConfigSource.default.at(basePath)
+  private val source   = ConfigSource.default.at(basePath)
 
   val dbLive: ULayer[DbConfig] = {
     import ConfigImpl._
@@ -26,8 +26,7 @@ object Config {
       )
     )
 
-  val connectionPoolConfigLive
-  : ZLayer[DbConfig, Throwable, ConnectionPoolConfig] =
+  val connectionPoolConfigLive: ZLayer[DbConfig, Throwable, ConnectionPoolConfig] =
     ZLayer(
       for {
         serverConfig <- ZIO.service[DbConfig]
@@ -46,20 +45,20 @@ object Config {
 }
 
 case class ConfigImpl(
-                       dbConfig: DbConfig,
-                       httpServiceConfig: HttpServerConfig
-                     )
+    dbConfig: DbConfig,
+    httpServiceConfig: HttpServerConfig
+)
 
 case class DbConfig(
-                     url: String,
-                     user: String,
-                     password: String
-                   )
+    url: String,
+    user: String,
+    password: String
+)
 
 case class HttpServerConfig(
-                             host: String,
-                             port: Int
-                           )
+    host: String,
+    port: Int
+)
 
 object ConfigImpl {
   implicit val configReader: ConfigReader[ConfigImpl] = deriveReader[ConfigImpl]
