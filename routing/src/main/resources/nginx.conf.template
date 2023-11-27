@@ -1,0 +1,15 @@
+upstream routing {
+    server routing-service1:${ROUTING1_HTTP_PORT};
+    server routing-service2:${ROUTING2_HTTP_PORT};
+    server routing-service3:${ROUTING3_HTTP_PORT};
+}
+
+server {
+    listen ${ROUTING_BALANCER_HTTP_PORT};
+
+    location / {
+        proxy_pass http://routing;
+        proxy_next_upstream error timeout;
+        proxy_connect_timeout 1s;
+    }
+}
