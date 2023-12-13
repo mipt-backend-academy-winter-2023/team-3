@@ -48,17 +48,65 @@ services:
       timeout: 5s
       retries: 5
 
-  routing-service:
+  routing-balancer:
+    image: nginx
+    env_file:
+      - .env
+    ports:
+      - "${ROUTING_BALANCER_HTTP_PORT}:${ROUTING_BALANCER_HTTP_PORT}"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "./routing/src/main/resources/nginx.conf.template:/etc/nginx/conf.d/nginx.conf.template"
+    command: /bin/bash -c "envsubst < etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    depends_on:
+      - routing-service1
+      - routing-service2
+      - routing-service3
+
+  routing-service1:
     build:
       context: .
       dockerfile: ./routing/Dockerfile
     env_file:
       - .env
     environment:
+      - ROUTING_HTTP_PORT=${ROUTING1_HTTP_PORT}
       - ROUTING_POSTGRES_HOST=routing-database
       - ROUTING_POSTGRES_PORT=5432
     ports:
-      - "${ROUTING_HTTP_PORT}:${ROUTING_HTTP_PORT}"
+      - "${ROUTING1_HTTP_PORT}:${ROUTING1_HTTP_PORT}"
+    depends_on:
+      routing-database:
+        condition: service_healthy
+
+  routing-service2:
+    build:
+      context: .
+      dockerfile: ./routing/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ROUTING_HTTP_PORT=${ROUTING2_HTTP_PORT}
+      - ROUTING_POSTGRES_HOST=routing-database
+      - ROUTING_POSTGRES_PORT=5432
+    ports:
+      - "${ROUTING2_HTTP_PORT}:${ROUTING2_HTTP_PORT}"
+    depends_on:
+      routing-database:
+        condition: service_healthy
+
+  routing-service3:
+    build:
+      context: .
+      dockerfile: ./routing/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ROUTING_HTTP_PORT=${ROUTING3_HTTP_PORT}
+      - ROUTING_POSTGRES_HOST=routing-database
+      - ROUTING_POSTGRES_PORT=5432
+    ports:
+      - "${ROUTING3_HTTP_PORT}:${ROUTING3_HTTP_PORT}"
     depends_on:
       routing-database:
         condition: service_healthy
